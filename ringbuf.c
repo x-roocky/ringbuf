@@ -43,3 +43,7 @@ size_t ringbuf_peek(const struct ringbuf *p, void *buffer, size_t size) {
 size_t ringbuf_get(struct ringbuf *p, void *buffer, size_t size) {
 	return skip(p, ringbuf_peek(p, buffer, size));
 }
+
+size_t ringbuf_skip(struct ringbuf *p, size_t length) {
+	return skip(p, min(length, ringbuf_length(p)));
+}

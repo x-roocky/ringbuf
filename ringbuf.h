@@ -54,6 +54,15 @@ size_t ringbuf_get(struct ringbuf *p, void *buffer, size_t size);
 size_t ringbuf_peek(const struct ringbuf *p, void *buffer, size_t size);
 
 /**
+ * @brief 从ringbuf头部跳过(丢弃)数据
+ * 
+ * @param p 
+ * @param length 
+ * @return size_t 
+ */
+size_t ringbuf_skip(struct ringbuf *p, size_t length);
+
+/**
  * @brief 获取ringbuf总计可用空间(字节数)
  * 
  * @param p 
