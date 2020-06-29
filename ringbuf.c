@@ -1,23 +1,23 @@
 #include "ringbuf.h"
 #include <memory.h>
 
-static inline int unused(const struct ringbuf *p) {
+static inline size_t unused(const struct ringbuf *p) {
     return p->mask - ((p->tail - p->head) & p->mask);
 }
 
-static inline int min(int a, int b) {
+static inline size_t min(size_t a, size_t b) {
     return a > b ? b : a; 
 }
 
-void ringbuf_init(struct ringbuf *p, void *data, int size) {
+void ringbuf_init(struct ringbuf *p, void *data, size_t size) {
     p->head = 0;
     p->tail = 0;
     p->data = data;
     p->mask = (unsigned short)(size - 1);
 }
 
-int ringbuf_put(struct ringbuf *p, const void *data, int length) {
-    int tmp = unused(p);
+size_t ringbuf_put(struct ringbuf *p, const void *data, size_t length) {
+    size_t tmp = unused(p);
 	if (length > tmp)
 		length = tmp;
 
@@ -29,8 +29,8 @@ int ringbuf_put(struct ringbuf *p, const void *data, int length) {
 	return length;
 }
 
-int ringbuf_peek(const struct ringbuf *p, void *buffer, int size) {
-    int tmp = ringbuf_length(p);
+size_t ringbuf_peek(const struct ringbuf *p, void *buffer, size_t size) {
+    size_t tmp = ringbuf_length(p);
 	if (size > tmp)
 		size = tmp;
 
@@ -40,7 +40,7 @@ int ringbuf_peek(const struct ringbuf *p, void *buffer, int size) {
     return size;
 }
 
-int ringbuf_get(struct ringbuf *p, void *buffer, int size) {
+size_t ringbuf_get(struct ringbuf *p, void *buffer, size_t size) {
     size = ringbuf_peek(p, buffer, size);
     p->head = (p->head + size) & p->mask;
 	return size;

@@ -1,6 +1,8 @@
 #ifndef __RINGBUF_H__
 #define __RINGBUF_H__
 
+#include <stddef.h>
+
 /**
  * @brief 环形缓冲结构(最大支持64KB)
  * 
@@ -19,7 +21,7 @@ struct ringbuf {
  * @param data 
  * @param size_power_of_two 
  */
-void ringbuf_init(struct ringbuf *p, void *data, int size_power_of_two);
+void ringbuf_init(struct ringbuf *p, void *data, size_t size_power_of_two);
 
 /**
  * @brief 向ringbuf放入数据
@@ -27,9 +29,9 @@ void ringbuf_init(struct ringbuf *p, void *data, int size_power_of_two);
  * @param p 
  * @param data 
  * @param length 
- * @return int 
+ * @return size_t 
  */
-int ringbuf_put(struct ringbuf *p, const void *data, int length);
+size_t ringbuf_put(struct ringbuf *p, const void *data, size_t length);
 
 /**
  * @brief 从ringbuf获取数据
@@ -37,9 +39,9 @@ int ringbuf_put(struct ringbuf *p, const void *data, int length);
  * @param p 
  * @param buffer 
  * @param size 
- * @return int 
+ * @return size_t 
  */
-int ringbuf_get(struct ringbuf *p, void *buffer, int size);
+size_t ringbuf_get(struct ringbuf *p, void *buffer, size_t size);
 
 /**
  * @brief 从ringbuf获取数据，但不清空
@@ -47,17 +49,17 @@ int ringbuf_get(struct ringbuf *p, void *buffer, int size);
  * @param p 
  * @param buffer 
  * @param size 
- * @return int 
+ * @return size_t 
  */
-int ringbuf_peek(const struct ringbuf *p, void *buffer, int size);
+size_t ringbuf_peek(const struct ringbuf *p, void *buffer, size_t size);
 
 /**
  * @brief 获取ringbuf总计可用空间(字节数)
  * 
  * @param p 
- * @return int 
+ * @return size_t 
  */
-static inline int ringbuf_size(const struct ringbuf *p) {
+static inline size_t ringbuf_size(const struct ringbuf *p) {
     return p->mask;
 }
 
@@ -65,9 +67,9 @@ static inline int ringbuf_size(const struct ringbuf *p) {
  * @brief 获取ringbuf已用长度(字节数)
  * 
  * @param p 
- * @return int 
+ * @return size_t 
  */
-static inline int ringbuf_length(const struct ringbuf *p) {
+static inline size_t ringbuf_length(const struct ringbuf *p) {
     return (p->tail - p->head) & p->mask;
 }
 
