@@ -3,6 +3,10 @@
 
 #include <stddef.h>
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 /**
  * @brief 环形缓冲结构(最大支持64KB)
  * 
@@ -81,5 +85,9 @@ static inline size_t ringbuf_size(const struct ringbuf *p) {
 static inline size_t ringbuf_length(const struct ringbuf *p) {
     return (p->tail - p->head) & p->mask;
 }
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif /* __RINGBUF_H__ */
