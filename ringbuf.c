@@ -1,5 +1,5 @@
 #include "ringbuf.h"
-#include <memory.h>
+#include <string.h>
 
 static inline size_t min(size_t a, size_t b) {
     return a > b ? b : a; 
