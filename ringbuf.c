@@ -20,7 +20,7 @@ void ringbuf_init(struct ringbuf *p, void *data, size_t size) {
 size_t ringbuf_put(struct ringbuf *p, const void *data, size_t length) {
     size_t first;
 
-	length = min(length, ringbuf_size(p) - ringbuf_length(p));
+	length = min(length, ringbuf_capacity(p) - ringbuf_length(p));
 	first = min(length, p->mask - p->tail + 1);
 	memcpy(p->data +p->tail, data, first);
 	memcpy(p->data, data + first, length - first);

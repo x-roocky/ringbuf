@@ -67,12 +67,12 @@ size_t ringbuf_peek(const struct ringbuf *p, void *buffer, size_t size);
 size_t ringbuf_skip(struct ringbuf *p, size_t length);
 
 /**
- * @brief 获取ringbuf总计可用空间(字节数)
+ * @brief 获取ringbuf总计可用容量(字节数)
  * 
  * @param p 
  * @return size_t 
  */
-static inline size_t ringbuf_size(const struct ringbuf *p) {
+static inline size_t ringbuf_capacity(const struct ringbuf *p) {
     return p->mask;
 }
 
