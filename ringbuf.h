@@ -7,6 +7,9 @@
 extern "C" {
 #endif
 
+#define RINGBUF_CONCAT2(s1, s2) s1##s2
+#define RINGBUF_CONCAT(s1, s2)  RINGBUF_CONCAT2(s1, s2)
+
 /**
  * @brief 环形缓冲结构(最大支持64KB)
  * 
@@ -17,6 +20,22 @@ struct ringbuf {
     unsigned char *data;
     unsigned short mask;
 };
+
+/**
+ * 静态定义并初始化ringbuf
+ * 
+ * @name: 定义的变量名
+ * @size_power_of_two: 缓冲区大小（字节数），必须是2的倍数
+ *
+ */
+#define RINGBUF_DEFINE(name, size_power_of_two) \
+    static unsigned char RINGBUF_CONCAT(name, _buffer4ringbuf_)[size_power_of_two]; \
+    static struct ringbuf name = { \
+        .head = 0, \
+        .tail = 0, \
+        .data = RINGBUF_CONCAT(name, _buffer4ringbuf_), \
+        .mask = size_power_of_two - 1, \
+    }
 
 /**
  * @brief 初始化ringbuf
