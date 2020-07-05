@@ -18,15 +18,15 @@ void ringbuf_init(struct ringbuf *p, void *data, size_t size) {
 }
 
 size_t ringbuf_put(struct ringbuf *p, const void *data, size_t length) {
-    size_t first;
-
-	length = min(length, ringbuf_capacity(p) - ringbuf_length(p));
-	first = min(length, p->mask - p->tail + 1);
-	memcpy(p->data +p->tail, data, first);
-	memcpy(p->data, data + first, length - first);
-
-	p->tail = (p->tail + length) & p->mask;
-	return length;
+	if (length <= (ringbuf_capacity(p) - ringbuf_length(p))) {
+		size_t first = min(length, p->mask - p->tail + 1);
+		memcpy(p->data + p->tail, data, first);
+		memcpy(p->data, data + first, length - first);
+		p->tail = (p->tail + length) & p->mask;
+		return length;
+	} else {
+		return 0;
+	}
 }
 
 size_t ringbuf_peek(const struct ringbuf *p, void *buffer, size_t size) {
